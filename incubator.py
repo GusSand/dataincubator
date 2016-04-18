@@ -4,6 +4,11 @@ from flask import request, render_template
 app = Flask(__name__)
 
 
+@app.route('/hillary')
+def berniebills():
+    return render_template('bernie.html')
+
+
 @app.route('/')
 @app.route('/bernie')
 def berniebills():

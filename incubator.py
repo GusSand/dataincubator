@@ -6,7 +6,7 @@ app = Flask(__name__)
 
 @app.route('/hillary')
 def hillarybills():
-    return render_template('bernie.html')
+    return render_template('hillary.html')
 
 
 @app.route('/')

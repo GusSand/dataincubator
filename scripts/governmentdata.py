@@ -7,45 +7,47 @@ import random
 import os
 from collections import namedtuple
 from pandas.io.json import json_normalize
+import requests
 
-
-# Create a mappint of legislator to government id
+# Create a mapping of legislator to government id
 # thesea are on https://www.govtrack.us
 candidates = {
-    'Bernie': 400357
-
-#
-#     'Hillary': 300022,
-#     'Cruz': 412573,
-#     'Kasich':400590
+    'Bernie': 400357,
+    'Hillary': 300022,
+    'Cruz': 412573,
+    'Kasich':400590
  }
 
-# to help with json conversion
-# def _json_object_hook(d): return namedtuple('X', d.keys())(*d.values())
-# def json2obj(data): return json.loads(data, object_hook=_json_object_hook)
+# The Title of the bill looks like: 'H.R. 1357 (104th): To provide certain employee'
+# we want to strip out everything until the space after the colon (:)
+def strip_unused(string):
+    pos = string.find(':')
+    return string[pos+2:]
 
-for name, gov_id in candidates.items():
+# gets the bill data for all the legislators and saves it into a csv file
+def get_bill_data():
+    for gov_name, gov_id in candidates.items():
+        url = 'https://www.govtrack.us/api/v2/bill?sponsor=%d' % gov_id
 
-    # First get all the data and store it in files
-    raw = urlopen('https://www.govtrack.us/api/v2/bill?sponsor=%d' % gov_id)
+        d = json.loads(requests.get(url).text)
 
-    # filename = '%s.csv' % name
-    # f = open(filename, 'w')
-    # f.truncate()
-    # print 'writing %s' % filename
-    # data = response.read()
-    # json.dump(data, f)
-    # f.write('\n')
-    # f.close()
+        data = d[u'objects']
+        result = json_normalize(data)
+        #result['title']
 
-    response = raw.read()
-    data = json.loads(response)
-    json_normalize(data['objects'])
+        result['clean_title'] = result.title.apply(strip_unused )
 
-    print data.head()
-
-
-    # extract the title
+        #save as csv
+        # print gov_name
+        filename = "bills_" + gov_name + ".csv"
+        result.to_csv(filename, encoding="utf-8")
+        print "wrote " + filename
 
 
-    # create wordmap
+if __name__ == '__main__':
+	try:
+
+		get_bill_data()
+
+	except:
+	    traceback.print_exc()

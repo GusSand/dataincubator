@@ -3,6 +3,10 @@ from flask import request, render_template
 
 app = Flask(__name__)
 
+@app.route('/trump')
+def trumptweets():
+    return render_template('trump.html')
+
 
 @app.route('/hillary')
 def hillarybills():
@@ -16,5 +20,5 @@ def berniebills():
 
 
 if __name__ == '__main__':
-    #app.run(host='0.0.0.0', port=8080, debug=True)
-    app.run()
+    app.run(host='0.0.0.0', port=8080, debug=True)
+    #app.run()

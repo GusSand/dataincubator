@@ -58,24 +58,22 @@ def create_twitter_wordclouds():
 
 def create_bills_wordclouds():
     # create word clouds for the bill files
-    for gov_name, gov_id in candidates.items():
-        inputfile = "bills_" + gov_name + ".csv"
-        outputfile = "bills_wordcloud_" + gov_name + ".png"
 
-        result = pd.read_csv(inputfile, encoding="utf-8")
+    inputfile = 'realdonaldtrump_tweets.csv'
+    result = pd.read_csv(inputfile, encoding="utf-8")
 
-        text = ""
-        for index, row in result.iterrows():
-            text += result.clean_title[index]
+    text = ""
+    for index, row in result.iterrows():
+        text += result.clean_title[index]
 
-        create_wordcloud(inputfile, outputfile, text, None)
+    create_wordcloud(inputfile, outputfile, text, None)
 
 
 if __name__ == '__main__':
 
     try:
         #create_bills_wordclouds()
-        create_twitter_wordclouds()
+        create_twitter_wordcloud()
 
     except:
         traceback.print_exc()

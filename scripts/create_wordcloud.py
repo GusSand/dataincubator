@@ -4,16 +4,18 @@ import pandas as pd
 import traceback
 
 twitter_ignore_list = ['https', 'bernie', 'http', 'https', 'BernieSanders',
-'Sanders', 'RT', 'Hillary', 'HillaryClinton']
+'Sanders', 'RT', 'Hillary', 'HillaryClinton', 'act', 'co', 'Clinton',
+'realDonaldTrump', 'Trump2016']
 
 
 # Create a mapping of legislator to government id
 # thesea are on https://www.govtrack.us
 candidates = {
-    'Bernie': 400357,
+    #'Bernie': 400357,
     'Hillary': 300022,
-    'Cruz': 412573,
-    'Kasich':400590
+#    'Cruz': 412573,
+#    'Kasich':400590
+    'Trump': 00000
  }
 
 
@@ -73,7 +75,7 @@ if __name__ == '__main__':
 
     try:
         #create_bills_wordclouds()
-        create_twitter_wordcloud()
+        create_twitter_wordclouds()
 
     except:
         traceback.print_exc()
